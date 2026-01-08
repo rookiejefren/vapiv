@@ -1,0 +1,117 @@
+basePath: /
+definitions:
+  handler.CryptoReq:
+    properties:
+      key:
+        type: string
+      text:
+        type: string
+    required:
+    - key
+    - text
+    type: object
+  response.Response:
+    properties:
+      code:
+        type: integer
+      data: {}
+      message:
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  description: 公共API服务平台
+  title: VAPIV API
+  version: "1.0"
+paths:
+  /api/bilibili/video:
+    get:
+      parameters:
+      - description: 视频BV号
+        in: query
+        name: bvid
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: B站视频信息
+      tags:
+      - 内容数据
+  /api/crypto/decrypt:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: 解密请求
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/handler.CryptoReq'
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: AES解密
+      tags:
+      - 核心服务
+  /api/crypto/encrypt:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: 加密请求
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/handler.CryptoReq'
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: AES加密
+      tags:
+      - 核心服务
+  /api/ip:
+    get:
+      parameters:
+      - description: IP地址
+        in: query
+        name: ip
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: IP地址查询
+      tags:
+      - 核心服务
+  /api/qq/avatar:
+    get:
+      parameters:
+      - description: QQ号
+        in: query
+        name: qq
+        required: true
+        type: string
+      - description: 头像尺寸
+        in: query
+        name: size
+        type: integer
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: QQ头像获取
+      tags:
+      - 内容数据
+swagger: "2.0"

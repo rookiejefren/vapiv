@@ -1,0 +1,28 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git push:*)",
+      "Bash(claude skill list)",
+      "Skill(backend-development:architecture-patterns)",
+      "WebSearch",
+      "WebFetch(domain:uapis.cn)",
+      "Bash(go mod init:*)",
+      "Bash(cmd /c \"go version\")",
+      "Bash(where:*)",
+      "Bash(cmd /c:*)",
+      "Bash(powershell:*)",
+      "Bash(\"C:\\\\Program Files\\\\Go\\\\bin\\\\go.exe\" mod init:*)",
+      "Bash(\"C:\\\\Program Files\\\\Go\\\\bin\\\\go.exe\" mod:*)",
+      "Bash(\"C:\\\\Program Files\\\\Go\\\\bin\\\\go.exe\" build:*)",
+      "Bash(\"C:\\\\Program Files\\\\Go\\\\bin\\\\go.exe\" install:*)",
+      "Bash(\"C:\\\\Program Files\\\\Go\\\\bin\\\\go.exe\" get:*)",
+      "Bash(\"$HOME/go/bin/swag\" init:*)",
+      "Bash(docker-compose up:*)",
+      "Bash(./vapiv.exe)",
+      "Bash(psql:*)",
+      "Bash(\"C:\\\\Program Files\\\\Go\\\\bin\\\\go.exe\" run:*)"
+    ]
+  }
+}
