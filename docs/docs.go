@@ -362,14 +362,14 @@ const docTemplate = `{
         "handler.LoginReq": {
             "type": "object",
             "required": [
-                "email",
-                "password"
+                "password",
+                "username"
             ],
             "properties": {
-                "email": {
+                "password": {
                     "type": "string"
                 },
-                "password": {
+                "username": {
                     "type": "string"
                 }
             }

@@ -23,7 +23,7 @@ type RegisterReq struct {
 }
 
 type LoginReq struct {
-	Email    string `json:"email" binding:"required,email"`
+	Username string `json:"username" binding:"required"`
 	Password string `json:"password" binding:"required"`
 }
 
@@ -77,7 +77,7 @@ func (h *UserHandler) Login(c *gin.Context) {
 		return
 	}
 
-	token, err := h.svc.Login(req.Email, req.Password)
+	token, err := h.svc.Login(req.Username, req.Password)
 	if err != nil {
 		response.Error(c, 401, err.Error())
 		return
