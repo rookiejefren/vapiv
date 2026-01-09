@@ -10,6 +10,33 @@ definitions:
     - key
     - text
     type: object
+  handler.LoginReq:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    required:
+    - email
+    - password
+    type: object
+  handler.RegisterReq:
+    properties:
+      code:
+        type: string
+      email:
+        type: string
+      password:
+        minLength: 6
+        type: string
+      username:
+        type: string
+    required:
+    - code
+    - email
+    - password
+    - username
+    type: object
   handler.ResetPasswordReq:
     properties:
       code:
@@ -168,6 +195,40 @@ paths:
       summary: QQ头像获取
       tags:
       - 内容数据
+  /auth/login:
+    post:
+      parameters:
+      - description: 登录信息
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/handler.LoginReq'
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: 用户登录
+      tags:
+      - 认证
+  /auth/register:
+    post:
+      parameters:
+      - description: 注册信息
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/handler.RegisterReq'
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: 用户注册
+      tags:
+      - 认证
   /auth/reset-password:
     post:
       parameters:

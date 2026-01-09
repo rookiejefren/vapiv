@@ -38,6 +38,12 @@ type ResetPasswordReq struct {
 	NewPassword string `json:"new_password" binding:"required,min=6"`
 }
 
+// Register godoc
+// @Summary 用户注册
+// @Tags 认证
+// @Param body body RegisterReq true "注册信息"
+// @Success 200 {object} response.Response
+// @Router /auth/register [post]
 func (h *UserHandler) Register(c *gin.Context) {
 	var req RegisterReq
 	if err := c.ShouldBindJSON(&req); err != nil {
@@ -58,6 +64,12 @@ func (h *UserHandler) Register(c *gin.Context) {
 	response.Success(c, u)
 }
 
+// Login godoc
+// @Summary 用户登录
+// @Tags 认证
+// @Param body body LoginReq true "登录信息"
+// @Success 200 {object} response.Response
+// @Router /auth/login [post]
 func (h *UserHandler) Login(c *gin.Context) {
 	var req LoginReq
 	if err := c.ShouldBindJSON(&req); err != nil {
