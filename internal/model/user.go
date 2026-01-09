@@ -21,7 +21,7 @@ type User struct {
 type APIKey struct {
 	ID        uint           `gorm:"primarykey" json:"id"`
 	UserID    uint           `gorm:"index" json:"user_id"`
-	Key       string         `gorm:"uniqueIndex;size:64" json:"key"`
+	Key       string         `gorm:"uniqueIndex;size:128" json:"key"`
 	Name      string         `gorm:"size:100" json:"name"`
 	Status    int            `gorm:"default:1" json:"status"`
 	CreatedAt time.Time      `json:"created_at"`

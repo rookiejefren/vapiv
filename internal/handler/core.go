@@ -10,12 +10,14 @@ import (
 type CoreHandler struct {
 	ipSvc     *core.IPService
 	cryptoSvc *core.CryptoService
+	douyinSvc *core.DouyinService
 }
 
 func NewCoreHandler() *CoreHandler {
 	return &CoreHandler{
 		ipSvc:     core.NewIPService(),
 		cryptoSvc: core.NewCryptoService(),
+		douyinSvc: core.NewDouyinService(),
 	}
 }
 
