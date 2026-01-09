@@ -10,6 +10,33 @@ definitions:
     - key
     - text
     type: object
+  handler.ResetPasswordReq:
+    properties:
+      code:
+        type: string
+      email:
+        type: string
+      new_password:
+        minLength: 6
+        type: string
+    required:
+    - code
+    - email
+    - new_password
+    type: object
+  handler.SendCodeReq:
+    properties:
+      email:
+        type: string
+      purpose:
+        enum:
+        - register
+        - reset
+        type: string
+    required:
+    - email
+    - purpose
+    type: object
   response.Response:
     properties:
       code:
@@ -38,6 +65,8 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/response.Response'
+      security:
+      - ApiKeyAuth: []
       summary: B站视频信息
       tags:
       - 内容数据
@@ -57,6 +86,8 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/response.Response'
+      security:
+      - ApiKeyAuth: []
       summary: AES解密
       tags:
       - 核心服务
@@ -76,7 +107,30 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/response.Response'
+      security:
+      - ApiKeyAuth: []
       summary: AES加密
+      tags:
+      - 核心服务
+  /api/douyin/video:
+    get:
+      consumes:
+      - application/json
+      description: 通过抖音分享链接获取视频信息和无水印下载地址
+      parameters:
+      - description: 抖音分享链接
+        in: query
+        name: url
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: 解析抖音视频
       tags:
       - 核心服务
   /api/ip:
@@ -114,4 +168,43 @@ paths:
       summary: QQ头像获取
       tags:
       - 内容数据
+  /auth/reset-password:
+    post:
+      parameters:
+      - description: 请求参数
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/handler.ResetPasswordReq'
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: 重置密码
+      tags:
+      - 认证
+  /auth/send-code:
+    post:
+      parameters:
+      - description: 请求参数
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/handler.SendCodeReq'
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: 发送验证码
+      tags:
+      - 认证
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: X-API-Key
+    type: apiKey
 swagger: "2.0"

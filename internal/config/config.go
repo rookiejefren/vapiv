@@ -10,6 +10,7 @@ type Config struct {
 	Database DatabaseConfig
 	Redis    RedisConfig
 	JWT      JWTConfig
+	SMTP     SMTPConfig
 }
 
 type ServerConfig struct {
@@ -38,6 +39,14 @@ type JWTConfig struct {
 	ExpireHour int
 }
 
+type SMTPConfig struct {
+	Host     string
+	Port     int
+	Username string
+	Password string
+	From     string
+}
+
 func Load() *Config {
 	return &Config{
 		Server: ServerConfig{
@@ -61,6 +70,13 @@ func Load() *Config {
 		JWT: JWTConfig{
 			Secret:     getEnv("JWT_SECRET", "your-secret-key-change-in-production"),
 			ExpireHour: getEnvInt("JWT_EXPIRE_HOUR", 24),
+		},
+		SMTP: SMTPConfig{
+			Host:     getEnv("SMTP_HOST", "smtp.gmail.com"),
+			Port:     getEnvInt("SMTP_PORT", 587),
+			Username: getEnv("SMTP_USERNAME", ""),
+			Password: getEnv("SMTP_PASSWORD", ""),
+			From:     getEnv("SMTP_FROM", ""),
 		},
 	}
 }

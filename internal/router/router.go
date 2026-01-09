@@ -7,6 +7,8 @@ import (
 	"vapiv/internal/handler"
 	"vapiv/internal/middleware"
 	"vapiv/internal/service/user"
+	"vapiv/pkg/captcha"
+	"vapiv/pkg/email"
 
 	"github.com/gin-gonic/gin"
 	"github.com/redis/go-redis/v9"
@@ -23,7 +25,9 @@ func Setup(db *gorm.DB, rdb *redis.Client, cfg *config.Config) *gin.Engine {
 	apiKeyMw := middleware.NewAPIKeyMiddleware(db)
 
 	// 服务
-	userSvc := user.NewService(db, cfg.JWT.Secret, cfg.JWT.ExpireHour)
+	emailSvc := email.NewService(cfg.SMTP.Host, cfg.SMTP.Port, cfg.SMTP.Username, cfg.SMTP.Password, cfg.SMTP.From)
+	captchaSvc := captcha.NewService(rdb)
+	userSvc := user.NewService(db, cfg.JWT.Secret, cfg.JWT.ExpireHour, emailSvc, captchaSvc)
 
 	// Handler
 	userH := handler.NewUserHandler(userSvc)
@@ -42,8 +46,10 @@ func Setup(db *gorm.DB, rdb *redis.Client, cfg *config.Config) *gin.Engine {
 	// 用户认证
 	auth := r.Group("/auth")
 	{
+		auth.POST("/send-code", userH.SendCode)
 		auth.POST("/register", userH.Register)
 		auth.POST("/login", userH.Login)
+		auth.POST("/reset-password", userH.ResetPassword)
 	}
 
 	// 需要JWT认证的路由

@@ -17,6 +17,9 @@ import (
 // @description 公共API服务平台
 // @host localhost:8080
 // @BasePath /
+// @securityDefinitions.apikey ApiKeyAuth
+// @in header
+// @name X-API-Key
 
 func main() {
 	godotenv.Load()

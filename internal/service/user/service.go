@@ -5,6 +5,8 @@ import (
 	"time"
 
 	"vapiv/internal/model"
+	"vapiv/pkg/captcha"
+	"vapiv/pkg/email"
 
 	"github.com/golang-jwt/jwt/v5"
 	"golang.org/x/crypto/bcrypt"
@@ -12,13 +14,15 @@ import (
 )
 
 type Service struct {
-	db        *gorm.DB
-	jwtSecret string
-	jwtExpire int
+	db         *gorm.DB
+	jwtSecret  string
+	jwtExpire  int
+	emailSvc   *email.Service
+	captchaSvc *captcha.Service
 }
 
-func NewService(db *gorm.DB, jwtSecret string, jwtExpire int) *Service {
-	return &Service{db: db, jwtSecret: jwtSecret, jwtExpire: jwtExpire}
+func NewService(db *gorm.DB, jwtSecret string, jwtExpire int, emailSvc *email.Service, captchaSvc *captcha.Service) *Service {
+	return &Service{db: db, jwtSecret: jwtSecret, jwtExpire: jwtExpire, emailSvc: emailSvc, captchaSvc: captchaSvc}
 }
 
 func (s *Service) Register(username, email, password string) (*model.User, error) {
@@ -55,4 +59,30 @@ func (s *Service) Login(email, password string) (string, error) {
 	})
 
 	return token.SignedString([]byte(s.jwtSecret))
+}
+
+func (s *Service) SendCode(email, purpose string) error {
+	code, err := s.captchaSvc.Generate(email, purpose)
+	if err != nil {
+		return err
+	}
+	return s.emailSvc.SendCode(email, code)
+}
+
+func (s *Service) VerifyCode(email, purpose, code string) bool {
+	return s.captchaSvc.Verify(email, purpose, code)
+}
+
+func (s *Service) EmailExists(email string) bool {
+	var count int64
+	s.db.Model(&model.User{}).Where("email = ?", email).Count(&count)
+	return count > 0
+}
+
+func (s *Service) ResetPassword(email, newPassword string) error {
+	hash, err := bcrypt.GenerateFromPassword([]byte(newPassword), bcrypt.DefaultCost)
+	if err != nil {
+		return err
+	}
+	return s.db.Model(&model.User{}).Where("email = ?", email).Update("password", string(hash)).Error
 }

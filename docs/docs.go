@@ -17,6 +17,11 @@ const docTemplate = `{
     "paths": {
         "/api/bilibili/video": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "tags": [
                     "内容数据"
                 ],
@@ -42,6 +47,11 @@ const docTemplate = `{
         },
         "/api/crypto/decrypt": {
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "consumes": [
                     "application/json"
                 ],
@@ -72,6 +82,11 @@ const docTemplate = `{
         },
         "/api/crypto/encrypt": {
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "consumes": [
                     "application/json"
                 ],
@@ -88,6 +103,40 @@ const docTemplate = `{
                         "schema": {
                             "$ref": "#/definitions/handler.CryptoReq"
                         }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/douyin/video": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "通过抖音分享链接获取视频信息和无水印下载地址",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "核心服务"
+                ],
+                "summary": "解析抖音视频",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "抖音分享链接",
+                        "name": "url",
+                        "in": "query",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -154,6 +203,60 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/auth/reset-password": {
+            "post": {
+                "tags": [
+                    "认证"
+                ],
+                "summary": "重置密码",
+                "parameters": [
+                    {
+                        "description": "请求参数",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/handler.ResetPasswordReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/auth/send-code": {
+            "post": {
+                "tags": [
+                    "认证"
+                ],
+                "summary": "发送验证码",
+                "parameters": [
+                    {
+                        "description": "请求参数",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/handler.SendCodeReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -172,6 +275,45 @@ const docTemplate = `{
                 }
             }
         },
+        "handler.ResetPasswordReq": {
+            "type": "object",
+            "required": [
+                "code",
+                "email",
+                "new_password"
+            ],
+            "properties": {
+                "code": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "new_password": {
+                    "type": "string",
+                    "minLength": 6
+                }
+            }
+        },
+        "handler.SendCodeReq": {
+            "type": "object",
+            "required": [
+                "email",
+                "purpose"
+            ],
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "purpose": {
+                    "type": "string",
+                    "enum": [
+                        "register",
+                        "reset"
+                    ]
+                }
+            }
+        },
         "response.Response": {
             "type": "object",
             "properties": {
@@ -183,6 +325,13 @@ const docTemplate = `{
                     "type": "string"
                 }
             }
+        }
+    },
+    "securityDefinitions": {
+        "ApiKeyAuth": {
+            "type": "apiKey",
+            "name": "X-API-Key",
+            "in": "header"
         }
     }
 }`
