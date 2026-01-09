@@ -82,6 +82,7 @@ func Setup(db *gorm.DB, rdb *redis.Client, cfg *config.Config) *gin.Engine {
 		apiAuth.POST("/crypto/encrypt", coreH.AESEncrypt)
 		apiAuth.POST("/crypto/decrypt", coreH.AESDecrypt)
 		apiAuth.GET("/bilibili/video", contentH.BilibiliVideo)
+		apiAuth.GET("/bilibili/video/url", contentH.BilibiliVideoURL)
 		apiAuth.GET("/douyin/video", coreH.DouyinVideo)
 	}
 

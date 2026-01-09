@@ -26,6 +26,7 @@ func NewContentHandler() *ContentHandler {
 // @Tags 内容数据
 // @Param bvid query string true "视频BV号"
 // @Success 200 {object} response.Response
+// @Security ApiKeyAuth
 // @Router /api/bilibili/video [get]
 func (h *ContentHandler) BilibiliVideo(c *gin.Context) {
 	bvid := c.Query("bvid")
@@ -58,4 +59,26 @@ func (h *ContentHandler) QQAvatar(c *gin.Context) {
 
 	size, _ := strconv.Atoi(c.DefaultQuery("size", "100"))
 	response.Success(c, h.qqSvc.GetAvatar(qq, size))
+}
+
+// BilibiliVideoURL godoc
+// @Summary B站视频下载地址
+// @Tags 内容数据
+// @Param bvid query string true "视频BV号"
+// @Success 200 {object} response.Response
+// @Security ApiKeyAuth
+// @Router /api/bilibili/video/url [get]
+func (h *ContentHandler) BilibiliVideoURL(c *gin.Context) {
+	bvid := c.Query("bvid")
+	if bvid == "" {
+		response.BadRequest(c, "bvid is required")
+		return
+	}
+
+	url, err := h.biliSvc.GetVideoURL(bvid)
+	if err != nil {
+		response.Error(c, 500, err.Error())
+		return
+	}
+	response.Success(c, url)
 }

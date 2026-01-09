@@ -45,6 +45,36 @@ const docTemplate = `{
                 }
             }
         },
+        "/api/bilibili/video/url": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "tags": [
+                    "内容数据"
+                ],
+                "summary": "B站视频下载地址",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "视频BV号",
+                        "name": "bvid",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
         "/api/crypto/decrypt": {
             "post": {
                 "security": [

@@ -97,6 +97,24 @@ paths:
       summary: B站视频信息
       tags:
       - 内容数据
+  /api/bilibili/video/url:
+    get:
+      parameters:
+      - description: 视频BV号
+        in: query
+        name: bvid
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: B站视频下载地址
+      tags:
+      - 内容数据
   /api/crypto/decrypt:
     post:
       consumes:
