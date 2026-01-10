@@ -13,6 +13,7 @@ import (
 // @Accept json
 // @Param url query string true "抖音分享链接"
 // @Success 200 {object} response.Response
+// @Security ApiKeyAuth
 // @Router /api/douyin/video [get]
 func (h *CoreHandler) DouyinVideo(c *gin.Context) {
 	url := c.Query("url")

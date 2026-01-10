@@ -17,6 +17,7 @@ type CryptoReq struct {
 // @Accept json
 // @Param request body CryptoReq true "加密请求"
 // @Success 200 {object} response.Response
+// @Security ApiKeyAuth
 // @Router /api/crypto/encrypt [post]
 func (h *CoreHandler) AESEncrypt(c *gin.Context) {
 	var req CryptoReq
@@ -39,6 +40,7 @@ func (h *CoreHandler) AESEncrypt(c *gin.Context) {
 // @Accept json
 // @Param request body CryptoReq true "解密请求"
 // @Success 200 {object} response.Response
+// @Security ApiKeyAuth
 // @Router /api/crypto/decrypt [post]
 func (h *CoreHandler) AESDecrypt(c *gin.Context) {
 	var req CryptoReq
