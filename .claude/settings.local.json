@@ -22,7 +22,11 @@
       "Bash(docker-compose up:*)",
       "Bash(./vapiv.exe)",
       "Bash(psql:*)",
-      "Bash(\"C:\\\\Program Files\\\\Go\\\\bin\\\\go.exe\" run:*)"
+      "Bash(\"C:\\\\Program Files\\\\Go\\\\bin\\\\go.exe\" run:*)",
+      "Bash(npm install)",
+      "Bash(npm install:*)",
+      "Bash(npx tailwindcss init:*)",
+      "Bash(npm run build)"
     ]
   }
 }
